@@ -240,9 +240,12 @@ class FieldConfig {
 								return null;
 							}
 
-							$value = array_map(static function ( $id ) {
-								return absint( $id );
-							}, $value );
+							$value = array_map(
+								static function ( $id ) {
+									return absint( $id );
+								},
+								$value
+							);
 
 							$resolver = new PostObjectConnectionResolver( $root, $args, $context, $info, 'any' );
 							return $resolver
@@ -412,14 +415,17 @@ class FieldConfig {
 		// map over the array to get the return values
 		if ( isset( $acf_field_config['return_format'] ) && 'array' === $acf_field_config['return_format'] && is_array( $value ) ) {
 
-			$value = array_map( static function ( $opt ) {
+			$value = array_map(
+				static function ( $opt ) {
 
-				if ( ! is_array( $opt ) ) {
-					return $opt;
-				}
+					if ( ! is_array( $opt ) ) {
+						return $opt;
+					}
 
-				return $opt['value'] ?? null;
-			}, $value );
+					return $opt['value'] ?? null;
+				},
+				$value
+			);
 		}
 
 		if ( isset( $acf_field_config['new_lines'] ) ) {
@@ -436,15 +442,24 @@ class FieldConfig {
 		if ( is_array( $root ) && ! ( ! empty( $root['type'] ) && 'options_page' === $root['type'] ) && isset( $acf_field_config['key'] ) && isset( $root[ $acf_field_config['key'] ] ) ) {
 			$value = $root[ $acf_field_config['key'] ];
 			if ( 'wysiwyg' === $acf_field_config['type'] ) {
+
+				// phpcs:ignore
 				$value = apply_filters( 'the_content', $value );
 			}
 		}
 
-		if ( ! empty( $acf_field_config['type'] ) && in_array( $acf_field_config['type'], [
-			'date_picker',
-			'time_picker',
-			'date_time_picker',
-		], true ) ) {
+		if (
+			! empty( $acf_field_config['type'] ) &&
+			in_array(
+				$acf_field_config['type'],
+				[
+					'date_picker',
+					'time_picker',
+					'date_time_picker',
+				],
+				true
+			)
+		) {
 
 			if ( ! empty( $value ) && ! empty( $acf_field_config['return_format'] ) ) {
 				$value = date( $acf_field_config['return_format'], strtotime( $value ) );
@@ -489,16 +504,19 @@ class FieldConfig {
 
 		$connection_name = $this->get_connection_name( $type_name, $to_type, $this->get_graphql_field_name() );
 
-		$connection_config = array_merge( [
-			'description'           => $this->get_field_description(),
-			'acf_field'             => $this->get_acf_field(),
-			'acf_field_group'       => $this->get_acf_field_group(),
-			'fromType'              => $type_name,
-			'toType'                => $to_type,
-			'connectionTypeName'    => $connection_name,
-			'fromFieldName'         => $this->get_graphql_field_name(),
-			'allowFieldUnderscores' => true,
-		], $config );
+		$connection_config = array_merge(
+			[
+				'description'           => $this->get_field_description(),
+				'acf_field'             => $this->get_acf_field(),
+				'acf_field_group'       => $this->get_acf_field_group(),
+				'fromType'              => $type_name,
+				'toType'                => $to_type,
+				'connectionTypeName'    => $connection_name,
+				'fromFieldName'         => $this->get_graphql_field_name(),
+				'allowFieldUnderscores' => true,
+			],
+			$config
+		);
 
 		// Register the connection to the Field Group Type
 		register_graphql_connection( $connection_config );

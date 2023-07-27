@@ -8,9 +8,12 @@ class Password {
 	 */
 	public static function register_field_type(): void {
 
-		register_graphql_acf_field_type( 'password', [
-			'graphql_type' => 'String',
-		] );
+		register_graphql_acf_field_type(
+			'password',
+			[
+				'graphql_type' => 'String',
+			]
+		);
 
 	}
 

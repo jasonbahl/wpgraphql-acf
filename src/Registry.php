@@ -118,145 +118,157 @@ class Registry {
 	 */
 	public function register_initial_graphql_types(): void {
 
-		register_graphql_interface_type( 'AcfFieldGroup', [
-			'description' => __( 'A Field Group managed by ACF', 'wp-graphql-acf' ),
-			'fields'      => [
-				'fieldGroupName' => [
-					'type'              => 'String',
-					'description'       => __( 'The name of the field group', 'wp-graphql-acf' ),
-					'deprecationReason' => __( 'Use __typename instead', 'wp-graphql-acf' ),
-					'resolve'           => function ( $root, $args, $context, $info ) {
-						return isset( $info->fieldDefinition->config['acf_field_group'] ) ? $this->get_field_group_graphql_type_name( $info->fieldDefinition->config['acf_field_group'] ) : null;
-					},
+		register_graphql_interface_type(
+			'AcfFieldGroup',
+			[
+				'description' => __( 'A Field Group managed by ACF', 'wp-graphql-acf' ),
+				'fields'      => [
+					'fieldGroupName' => [
+						'type'              => 'String',
+						'description'       => __( 'The name of the field group', 'wp-graphql-acf' ),
+						'deprecationReason' => __( 'Use __typename instead', 'wp-graphql-acf' ),
+						'resolve'           => function ( $root, $args, $context, $info ) {
+							return isset( $info->fieldDefinition->config['acf_field_group'] ) ? $this->get_field_group_graphql_type_name( $info->fieldDefinition->config['acf_field_group'] ) : null;
+						},
+					],
 				],
-			],
-		] );
+			]
+		);
 
-		register_graphql_interface_type( 'AcfFieldGroupFields', [
-			'description' => __( 'Fields associated with an ACF Field Group', 'wp-graphql-acf' ),
-			'fields'      => [
-				'fieldGroupName' => [
-					'type'              => 'String',
-					'description'       => __( 'The name of the field group', 'wp-graphql-acf' ),
-					'deprecationReason' => __( 'Use __typename instead', 'wp-graphql-acf' ),
+		register_graphql_interface_type(
+			'AcfFieldGroupFields',
+			[
+				'description' => __( 'Fields associated with an ACF Field Group', 'wp-graphql-acf' ),
+				'fields'      => [
+					'fieldGroupName' => [
+						'type'              => 'String',
+						'description'       => __( 'The name of the field group', 'wp-graphql-acf' ),
+						'deprecationReason' => __( 'Use __typename instead', 'wp-graphql-acf' ),
+					],
 				],
-			],
-		] );
+			]
+		);
 
-		register_graphql_object_type( 'AcfGoogleMap', [
-			'description' => __( 'A group of fields representing a Google Map', 'wp-graphql-acf' ),
-			'fields'      => [
-				'streetAddress' => [
-					'type'        => 'String',
-					'description' => __( 'The street address associated with the map', 'wp-graphql-acf' ),
-					'resolve'     => function ( $root ) {
-						return $root['address'] ?? null;
-					},
+		register_graphql_object_type(
+			'AcfGoogleMap',
+			[
+				'description' => __( 'A group of fields representing a Google Map', 'wp-graphql-acf' ),
+				'fields'      => [
+					'streetAddress' => [
+						'type'        => 'String',
+						'description' => __( 'The street address associated with the map', 'wp-graphql-acf' ),
+						'resolve'     => function ( $root ) {
+							return $root['address'] ?? null;
+						},
+					],
+					'latitude'      => [
+						'type'        => 'Float',
+						'description' => __( 'The latitude associated with the map', 'wp-graphql-acf' ),
+						'resolve'     => function ( $root ) {
+							return $root['lat'] ?? null;
+						},
+					],
+					'longitude'     => [
+						'type'        => 'Float',
+						'description' => __( 'The longitude associated with the map', 'wp-graphql-acf' ),
+						'resolve'     => function ( $root ) {
+							return $root['lng'] ?? null;
+						},
+					],
+					'streetName'    => [
+						'type'        => 'String',
+						'description' => __( 'The street name associated with the map', 'wp-graphql-acf' ),
+						'resolve'     => function ( $root ) {
+							return $root['street_name'] ?? null;
+						},
+					],
+					'streetNumber'  => [
+						'type'        => 'String',
+						'description' => __( 'The street number associated with the map', 'wp-graphql-acf' ),
+						'resolve'     => function ( $root ) {
+							return $root['street_number'] ?? null;
+						},
+					],
+					'city'          => [
+						'type'        => 'String',
+						'description' => __( 'The city associated with the map', 'wp-graphql-acf' ),
+						'resolve'     => function ( $root ) {
+							return $root['city'] ?? null;
+						},
+					],
+					'state'         => [
+						'type'        => 'String',
+						'description' => __( 'The state associated with the map', 'wp-graphql-acf' ),
+						'resolve'     => function ( $root ) {
+							return $root['state'] ?? null;
+						},
+					],
+					'stateShort'    => [
+						'type'        => 'String',
+						'description' => __( 'The state abbreviation associated with the map', 'wp-graphql-acf' ),
+						'resolve'     => function ( $root ) {
+							return $root['state_short'] ?? null;
+						},
+					],
+					'postCode'      => [
+						'type'        => 'String',
+						'description' => __( 'The post code associated with the map', 'wp-graphql-acf' ),
+						'resolve'     => function ( $root ) {
+							return $root['post_code'] ?? null;
+						},
+					],
+					'country'       => [
+						'type'        => 'String',
+						'description' => __( 'The country associated with the map', 'wp-graphql-acf' ),
+						'resolve'     => function ( $root ) {
+							return $root['country'] ?? null;
+						},
+					],
+					'countryShort'  => [
+						'type'        => 'String',
+						'description' => __( 'The country abbreviation associated with the map', 'wp-graphql-acf' ),
+						'resolve'     => function ( $root ) {
+							return $root['country_short'] ?? null;
+						},
+					],
+					'placeId'       => [
+						'type'        => 'String',
+						'description' => __( 'The country associated with the map', 'wp-graphql-acf' ),
+						'resolve'     => function ( $root ) {
+							return $root['place_id'] ?? null;
+						},
+					],
+					'zoom'          => [
+						'type'        => 'String',
+						'description' => __( 'The zoom defined with the map', 'wp-graphql-acf' ),
+						'resolve'     => function ( $root ) {
+							return $root['zoom'] ?? null;
+						},
+					],
 				],
-				'latitude'      => [
-					'type'        => 'Float',
-					'description' => __( 'The latitude associated with the map', 'wp-graphql-acf' ),
-					'resolve'     => function ( $root ) {
-						return $root['lat'] ?? null;
-					},
-				],
-				'longitude'     => [
-					'type'        => 'Float',
-					'description' => __( 'The longitude associated with the map', 'wp-graphql-acf' ),
-					'resolve'     => function ( $root ) {
-						return $root['lng'] ?? null;
-					},
-				],
-				'streetName'    => [
-					'type'        => 'String',
-					'description' => __( 'The street name associated with the map', 'wp-graphql-acf' ),
-					'resolve'     => function ( $root ) {
-						return $root['street_name'] ?? null;
-					},
-				],
-				'streetNumber'  => [
-					'type'        => 'String',
-					'description' => __( 'The street number associated with the map', 'wp-graphql-acf' ),
-					'resolve'     => function ( $root ) {
-						return $root['street_number'] ?? null;
-					},
-				],
-				'city'          => [
-					'type'        => 'String',
-					'description' => __( 'The city associated with the map', 'wp-graphql-acf' ),
-					'resolve'     => function ( $root ) {
-						return $root['city'] ?? null;
-					},
-				],
-				'state'         => [
-					'type'        => 'String',
-					'description' => __( 'The state associated with the map', 'wp-graphql-acf' ),
-					'resolve'     => function ( $root ) {
-						return $root['state'] ?? null;
-					},
-				],
-				'stateShort'    => [
-					'type'        => 'String',
-					'description' => __( 'The state abbreviation associated with the map', 'wp-graphql-acf' ),
-					'resolve'     => function ( $root ) {
-						return $root['state_short'] ?? null;
-					},
-				],
-				'postCode'      => [
-					'type'        => 'String',
-					'description' => __( 'The post code associated with the map', 'wp-graphql-acf' ),
-					'resolve'     => function ( $root ) {
-						return $root['post_code'] ?? null;
-					},
-				],
-				'country'       => [
-					'type'        => 'String',
-					'description' => __( 'The country associated with the map', 'wp-graphql-acf' ),
-					'resolve'     => function ( $root ) {
-						return $root['country'] ?? null;
-					},
-				],
-				'countryShort'  => [
-					'type'        => 'String',
-					'description' => __( 'The country abbreviation associated with the map', 'wp-graphql-acf' ),
-					'resolve'     => function ( $root ) {
-						return $root['country_short'] ?? null;
-					},
-				],
-				'placeId'       => [
-					'type'        => 'String',
-					'description' => __( 'The country associated with the map', 'wp-graphql-acf' ),
-					'resolve'     => function ( $root ) {
-						return $root['place_id'] ?? null;
-					},
-				],
-				'zoom'          => [
-					'type'        => 'String',
-					'description' => __( 'The zoom defined with the map', 'wp-graphql-acf' ),
-					'resolve'     => function ( $root ) {
-						return $root['zoom'] ?? null;
-					},
-				],
-			],
-		] );
+			]
+		);
 
-		register_graphql_object_type( 'AcfLink', [
-			'description' => __( 'ACF Link field', 'wp-graphql-acf' ),
-			'fields'      => [
-				'url'    => [
-					'type'        => 'String',
-					'description' => __( 'The url of the link', 'wp-graphql-acf' ),
+		register_graphql_object_type(
+			'AcfLink',
+			[
+				'description' => __( 'ACF Link field', 'wp-graphql-acf' ),
+				'fields'      => [
+					'url'    => [
+						'type'        => 'String',
+						'description' => __( 'The url of the link', 'wp-graphql-acf' ),
+					],
+					'title'  => [
+						'type'        => 'String',
+						'description' => __( 'The title of the link', 'wp-graphql-acf' ),
+					],
+					'target' => [
+						'type'        => 'String',
+						'description' => __( 'The target of the link (_blank, etc)', 'wp-graphql-acf' ),
+					],
 				],
-				'title'  => [
-					'type'        => 'String',
-					'description' => __( 'The title of the link', 'wp-graphql-acf' ),
-				],
-				'target' => [
-					'type'        => 'String',
-					'description' => __( 'The target of the link (_blank, etc)', 'wp-graphql-acf' ),
-				],
-			],
-		] );
+			]
+		);
 
 	}
 
@@ -317,24 +329,27 @@ class Registry {
 			return;
 		}
 
-		register_graphql_interface_type( 'AcfOptionsPage', [
-			'interfaces'  => [ 'Node' ],
-			'description' => __( 'Options Page registered by ACF', 'wp-graphql-acf' ),
-			'fields'      => [
-				'id'        => [
-					'type' => [ 'non_null' => 'ID' ],
+		register_graphql_interface_type(
+			'AcfOptionsPage',
+			[
+				'interfaces'  => [ 'Node' ],
+				'description' => __( 'Options Page registered by ACF', 'wp-graphql-acf' ),
+				'fields'      => [
+					'id'        => [
+						'type' => [ 'non_null' => 'ID' ],
+					],
+					'pageTitle' => [
+						'type' => 'String',
+					],
+					'menuTitle' => [
+						'type' => 'String',
+					],
+					'parentId'  => [
+						'type' => 'String',
+					],
 				],
-				'pageTitle' => [
-					'type' => 'String',
-				],
-				'menuTitle' => [
-					'type' => 'String',
-				],
-				'parentId'  => [
-					'type' => 'String',
-				],
-			],
-		] );
+			]
+		);
 
 		$graphql_options_pages = acf_get_options_pages();
 
@@ -353,41 +368,47 @@ class Registry {
 				continue;
 			}
 
-			register_graphql_object_type( $type_name, [
-				'interfaces' => [ 'AcfOptionsPage' ],
-				'model'      => AcfOptionsPage::class,
-				'fields'     => [
-					'id'        => [
-						'type' => [ 'non_null' => 'ID' ],
+			register_graphql_object_type(
+				$type_name,
+				[
+					'interfaces' => [ 'AcfOptionsPage' ],
+					'model'      => AcfOptionsPage::class,
+					'fields'     => [
+						'id'        => [
+							'type' => [ 'non_null' => 'ID' ],
+						],
+						'pageTitle' => [
+							'type' => 'String',
+						],
 					],
-					'pageTitle' => [
-						'type' => 'String',
-					],
-				],
-			] );
+				]
+			);
 
 			$field_name = Utils::format_field_name( $type_name );
 
 			$interface_name = 'WithAcfOptionsPage' . $type_name;
 
-			register_graphql_interface_type( $interface_name, [
-				'description' => sprintf( __( 'Access point for the "%s" ACF Options Page', 'wp-graphql-acf' ), $type_name ),
-				'fields'      => [
-					$field_name => [
-						'type'    => $type_name,
-						'resolve' => function ( $source, $args, AppContext $context, ResolveInfo $info ) use ( $graphql_options_page ) {
+			register_graphql_interface_type(
+				$interface_name,
+				[
+					'description' => sprintf( __( 'Access point for the "%s" ACF Options Page', 'wp-graphql-acf' ), $type_name ),
+					'fields'      => [
+						$field_name => [
+							'type'    => $type_name,
+							'resolve' => function ( $source, $args, AppContext $context, ResolveInfo $info ) use ( $graphql_options_page ) {
 
-							$loader = $context->get_loader( 'acf_options_page' );
+								$loader = $context->get_loader( 'acf_options_page' );
 
-							if ( ! $loader instanceof AcfOptionsPageLoader ) {
-								return 'null';
-							}
+								if ( ! $loader instanceof AcfOptionsPageLoader ) {
+									return 'null';
+								}
 
-							return $context->get_loader( 'acf_options_page' )->load_deferred( $graphql_options_page['menu_slug'] );
-						},
+								return $context->get_loader( 'acf_options_page' )->load_deferred( $graphql_options_page['menu_slug'] );
+							},
+						],
 					],
-				],
-			]);
+				]
+			);
 
 			register_graphql_interfaces_to_types( [ $interface_name ], [ 'RootQuery' ] );
 
@@ -508,9 +529,15 @@ class Registry {
 		$name = $this->get_field_group_name( $field_group );
 
 		if ( empty( $name ) ) {
-			graphql_debug( sprintf( __( 'The graphql field name "%s" is not a valid name and cannot be added to the GraphQL Schema', 'wp-graphql-acf' ), $name ), [
-				'field_group' => $field_group,
-			] );
+			graphql_debug(
+				sprintf(
+					__( 'The graphql field name "%s" is not a valid name and cannot be added to the GraphQL Schema', 'wp-graphql-acf' ),
+					$name
+				),
+				[
+					'field_group' => $field_group,
+				]
+			);
 			return null;
 		}
 
@@ -626,25 +653,28 @@ class Registry {
 
 				if ( ! $this->has_registered_field_group( $with_field_group_interface_name ) ) {
 
-					register_graphql_interface_type( $with_field_group_interface_name, [
-						'eagerlyLoadType' => true,
-						'description'     => sprintf( __( 'Provides access to fields of the "%1$s" ACF Field Group via the "%2$s" field', 'wp-graphql-acf' ), $type_name, $field_name ),
-						'fields'          => [
-							$field_name => [
-								'type'        => $type_name,
-								'description' => sprintf( __( 'Fields of the %s ACF Field Group', 'wp-graphql-acf' ), $type_name ),
-								'resolve'     => function ( $node ) use ( $acf_field_group ) {
+					register_graphql_interface_type(
+						$with_field_group_interface_name,
+						[
+							'eagerlyLoadType' => true,
+							'description'     => sprintf( __( 'Provides access to fields of the "%1$s" ACF Field Group via the "%2$s" field', 'wp-graphql-acf' ), $type_name, $field_name ),
+							'fields'          => [
+								$field_name => [
+									'type'        => $type_name,
+									'description' => sprintf( __( 'Fields of the %s ACF Field Group', 'wp-graphql-acf' ), $type_name ),
+									'resolve'     => function ( $node ) use ( $acf_field_group ) {
 
-									// Pass the $root node and the $acf_field_group down
-									// to the resolving field
-									return [
-										'node'            => $node,
-										'acf_field_group' => $acf_field_group,
-									];
-								},
+										// Pass the $root node and the $acf_field_group down
+										// to the resolving field
+										return [
+											'node' => $node,
+											'acf_field_group' => $acf_field_group,
+										];
+									},
+								],
 							],
-						],
-					] );
+						]
+					);
 
 					$this->register_field_group( $with_field_group_interface_name, $with_field_group_interface_name );
 
@@ -665,16 +695,19 @@ class Registry {
 				}
 
 				// Add an Interface to the Schema representing the Fields of the ACF Field Group
-				register_graphql_interface_type( $type_name . '_Fields', [
-					'kind'            => 'interface',
-					'eagerlyLoadType' => true,
-					'name'            => $type_name . '_Fields',
-					'description'     => sprintf( __( 'Interface representing fields of the ACF "%s" Field Group', 'wp-graphql-acf' ), $type_name ),
-					'interfaces'      => $interfaces,
-					'fields'          => $fields,
-					'locations'       => $locations,
-					'acf_field_group' => $acf_field_group,
-				] );
+				register_graphql_interface_type(
+					$type_name . '_Fields',
+					[
+						'kind'            => 'interface',
+						'eagerlyLoadType' => true,
+						'name'            => $type_name . '_Fields',
+						'description'     => sprintf( __( 'Interface representing fields of the ACF "%s" Field Group', 'wp-graphql-acf' ), $type_name ),
+						'interfaces'      => $interfaces,
+						'fields'          => $fields,
+						'locations'       => $locations,
+						'acf_field_group' => $acf_field_group,
+					]
+				);
 
 				$this->register_field_group( $type_name . '_Fields', $acf_field_group );
 
@@ -684,16 +717,19 @@ class Registry {
 
 				// Add an object type to the Schema representing the Field Group, implementing interfaces
 				// of any cloned field groups
-				register_graphql_object_type( $type_name, [
-					'kind'            => 'object',
-					'eagerlyLoadType' => empty( $locations ),
-					'name'            => $type_name,
-					'description'     => sprintf( __( 'Added by WPGraphQL for ACF Redux', 'wp-graphql-acf' ), $type_name ),
-					'interfaces'      => [ $type_name . '_Fields' ],
-					'fields'          => $fields,
-					'locations'       => $locations,
-					'acf_field_group' => $acf_field_group,
-				] );
+				register_graphql_object_type(
+					$type_name,
+					[
+						'kind'            => 'object',
+						'eagerlyLoadType' => empty( $locations ),
+						'name'            => $type_name,
+						'description'     => sprintf( __( 'Added by WPGraphQL for ACF Redux', 'wp-graphql-acf' ), $type_name ),
+						'interfaces'      => [ $type_name . '_Fields' ],
+						'fields'          => $fields,
+						'locations'       => $locations,
+						'acf_field_group' => $acf_field_group,
+					]
+				);
 
 				$this->register_field_group( $type_name, $acf_field_group );
 			}

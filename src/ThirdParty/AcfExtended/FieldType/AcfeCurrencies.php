@@ -23,9 +23,14 @@ class AcfeCurrencies {
 			$currencies = [ $currencies ];
 		}
 
-		return array_filter( array_map( static function ( $currency ) {
-			return acfe_get_currency( $currency );
-		}, $currencies ) );
+		return array_filter(
+			array_map(
+				static function ( $currency ) {
+					return acfe_get_currency( $currency );
+				},
+				$currencies
+			)
+		);
 
 	}
 
@@ -33,16 +38,19 @@ class AcfeCurrencies {
 	 * @return void
 	 */
 	public static function register_field_type(): void {
-		register_graphql_acf_field_type( 'acfe_currencies', [
-			'graphql_type' => function () {
-				return [ 'list_of' => 'ACFE_Currency' ];
-			},
-			'resolve'      => static function ( $root, $args, $context, $info, $field_type, $field_config ) {
-				$value = $field_config->resolve_field( $root, $args, $context, $info );
+		register_graphql_acf_field_type(
+			'acfe_currencies',
+			[
+				'graphql_type' => function () {
+					return [ 'list_of' => 'ACFE_Currency' ];
+				},
+				'resolve'      => static function ( $root, $args, $context, $info, $field_type, $field_config ) {
+					$value = $field_config->resolve_field( $root, $args, $context, $info );
 
-				return self::resolve_currencies( $value );
-			},
-		]);
+					return self::resolve_currencies( $value );
+				},
+			]
+		);
 	}
 
 }

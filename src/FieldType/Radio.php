@@ -8,9 +8,12 @@ class Radio {
 	 */
 	public static function register_field_type(): void {
 
-		register_graphql_acf_field_type( 'radio', [
-			'graphql_type' => 'String',
-		] );
+		register_graphql_acf_field_type(
+			'radio',
+			[
+				'graphql_type' => 'String',
+			]
+		);
 
 	}
 

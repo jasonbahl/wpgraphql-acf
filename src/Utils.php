@@ -305,9 +305,12 @@ class Utils {
 		$starts_with_string = is_numeric( substr( $field_group_name, 0, 1 ) );
 
 		if ( $starts_with_string ) {
-			graphql_debug( __( 'The ACF Field or Field Group could not be added to the schema. GraphQL Field and Type names cannot start with a number', 'wp-graphql-acf' ), [
-				'invalid' => $field_group,
-			] );
+			graphql_debug(
+				__( 'The ACF Field or Field Group could not be added to the schema. GraphQL Field and Type names cannot start with a number', 'wp-graphql-acf' ),
+				[
+					'invalid' => $field_group,
+				]
+			);
 			return '';
 		}
 

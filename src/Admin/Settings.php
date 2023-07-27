@@ -53,10 +53,12 @@ class Settings {
 		 * Add settings to individual fields to allow each field granular control
 		 * over how it's shown in the GraphQL Schema
 		 */
-		add_filter( 'acf/field_group/additional_field_settings_tabs', static function ( $tabs ) {
-			$tabs['graphql'] = __( 'GraphQL', 'wp-graphql-acf' );
-			return $tabs;
-		});
+		add_filter( 'acf/field_group/additional_field_settings_tabs',
+			static function ( $tabs ) {
+				$tabs['graphql'] = __( 'GraphQL', 'wp-graphql-acf' );
+				return $tabs;
+			}
+		);
 
 		// Setup the Field Settings for each field type.
 		$this->setup_field_settings();
@@ -73,11 +75,14 @@ class Settings {
 			add_action( 'add_meta_boxes', [ $this, 'register_meta_boxes' ] );
 		} else {
 			add_action( 'acf/field_group/render_group_settings_tab/graphql', [ $this, 'display_graphql_field_group_fields' ] );
-			add_filter( 'acf/field_group/additional_group_settings_tabs', static function ( $tabs ) {
-				$tabs['graphql'] = __( 'GraphQL', 'wp-graphql-acf' );
+			add_filter(
+				'acf/field_group/additional_group_settings_tabs',
+				static function ( $tabs ) {
+					$tabs['graphql'] = __( 'GraphQL', 'wp-graphql-acf' );
 
-				return $tabs;
-			} );
+					return $tabs;
+				}
+			);
 		}
 
 
@@ -114,11 +119,18 @@ class Settings {
 
 			if ( ! empty( $acf_field_types ) ) {
 
-				array_map( function ( $field_type ) {
-					add_action( 'acf/field_group/render_field_settings_tab/graphql/type=' . $field_type, function ( $acf_field ) use ( $field_type ) {
-						$this->add_field_settings( $acf_field, (string) $field_type );
-					}, 10, 1 );
-				}, $acf_field_types );
+				array_map(
+					function ( $field_type ) {
+						add_action( 'acf/field_group/render_field_settings_tab/graphql/type=' . $field_type,
+							function ( $acf_field ) use ( $field_type ) {
+								$this->add_field_settings( $acf_field, (string) $field_type );
+							},
+							10,
+							1
+						);
+					},
+					$acf_field_types
+				);
 
 			}
 		}
@@ -177,10 +189,15 @@ class Settings {
 	 * @return void
 	 */
 	public function register_meta_boxes() {
-		add_meta_box( 'wp-graphql-acf-meta-box', __( 'GraphQL', 'wp-graphql-acf' ), [
-			$this,
-			'display_graphql_field_group_fields',
-		], [ 'acf-field-group' ] );
+		add_meta_box(
+			'wp-graphql-acf-meta-box',
+			__( 'GraphQL', 'wp-graphql-acf' ),
+			[
+				$this,
+				'display_graphql_field_group_fields',
+			],
+			[ 'acf-field-group' ]
+		);
 	}
 
 
@@ -383,14 +400,17 @@ class Settings {
 	 * @return array
 	 */
 	public function get_graphql_non_null_field_config( array $override = [] ): array {
-		return array_merge( [
-			'label'         => __( 'GraphQL NonNull?', 'wp-graphql-acf' ),
-			'instructions'  => __( 'Whether the field should be non-null in the GraphQL Schema. Entries that do not have a value for this field will result in a GraphQL error. Default false, even for "required" fields, as a field can be set required after previous entries have no data entered for the field and would cause errors. Changing this value can lead to breaking changes in your GraphQL Schema.', 'wp-graphql-acf' ),
-			'name'          => 'graphql_non_null',
-			'key'           => 'graphql_non_null',
-			'type'          => 'true_false',
-			'default_value' => false,
-		], $override );
+		return array_merge(
+			[
+				'label'         => __( 'GraphQL NonNull?', 'wp-graphql-acf' ),
+				'instructions'  => __( 'Whether the field should be non-null in the GraphQL Schema. Entries that do not have a value for this field will result in a GraphQL error. Default false, even for "required" fields, as a field can be set required after previous entries have no data entered for the field and would cause errors. Changing this value can lead to breaking changes in your GraphQL Schema.', 'wp-graphql-acf' ),
+				'name'          => 'graphql_non_null',
+				'key'           => 'graphql_non_null',
+				'type'          => 'true_false',
+				'default_value' => false,
+			],
+			$override
+		);
 	}
 
 	/**
@@ -401,25 +421,28 @@ class Settings {
 	 * @return array
 	 */
 	public function get_graphql_resolve_type_field_config( array $override = [] ): array {
-		return array_merge( [
-			'label'         => __( 'GraphQL Resolve Type', 'wp-graphql-acf' ),
-			'instructions'  => __( 'The GraphQL Type the field will show in the Schema as and resolve to.', 'wp-graphql-acf' ),
-			'name'          => 'graphql_resolve_type',
-			'key'           => 'graphql_resolve_type',
-			'type'          => 'select',
-			'multiple'      => false,
-			'ui'            => false,
-			'allow_null'    => false,
-			'default_value' => 'list:string',
-			'choices'       => [
-				'string'      => 'String',
-				'int'         => 'Int',
-				'float'       => 'Float',
-				'list:string' => '[String] (List of Strings)',
-				'list:int'    => '[Int] (List of Integers)',
-				'list:float'  => '[Float] (List of Floats)',
+		return array_merge(
+			[
+				'label'         => __( 'GraphQL Resolve Type', 'wp-graphql-acf' ),
+				'instructions'  => __( 'The GraphQL Type the field will show in the Schema as and resolve to.', 'wp-graphql-acf' ),
+				'name'          => 'graphql_resolve_type',
+				'key'           => 'graphql_resolve_type',
+				'type'          => 'select',
+				'multiple'      => false,
+				'ui'            => false,
+				'allow_null'    => false,
+				'default_value' => 'list:string',
+				'choices'       => [
+					'string'      => 'String',
+					'int'         => 'Int',
+					'float'       => 'Float',
+					'list:string' => '[String] (List of Strings)',
+					'list:int'    => '[Int] (List of Integers)',
+					'list:float'  => '[Float] (List of Floats)',
+				],
 			],
-		], $override );
+			$override
+		);
 	}
 
 	/**
@@ -452,9 +475,13 @@ class Settings {
 			true
 		);
 
-		wp_localize_script( 'graphql-acf', 'wp_graphql_acf', [
-			'nonce' => wp_create_nonce( 'wp_graphql_acf' ),
-		]);
+		wp_localize_script(
+			'graphql-acf',
+			'wp_graphql_acf',
+			[
+				'nonce' => wp_create_nonce( 'wp_graphql_acf' ),
+			]
+		);
 
 	}
 
@@ -500,7 +527,6 @@ class Settings {
 	 * @throws \GraphQL\Error\Error
 	 */
 	public function wpgraphql_admin_table_columns_html( string $column_name, int $post_id ): void {
-		global $field_group;
 
 		if ( empty( $post_id ) ) {
 			echo null;
